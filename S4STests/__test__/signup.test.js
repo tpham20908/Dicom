@@ -5,24 +5,27 @@ const puppeteer = require("puppeteer");
 
 const APP = "https://shipping.dicom.com/register#register";
 // const DEV_API_URL = "https://dicom-dev.cleverbuild.biz/api/v1";
-/*
+
 const user = {
 	firstName: faker.name.firstName(),
 	lastName: faker.name.lastName(),
 	email: faker.internet.email(),
 	password: faker.internet.password(),
 	companyName: faker.company.companyName(),
-	birthdayMonth: faker.date.month(),
-	birthdayDay: faker.date.between(1, 28)
+	birthdayMonth: "Sep",
+	birthdayDay: "20",
+	language: "English"
 };
-*/
+
+let rand = Math.floor(Math.random() * 99999);
+
 let browser;
 let page;
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({
 		headless: false,
-		slowMo: 10
+		// slowMo: 40
 	});
 	page = await browser.newPage();
 });
@@ -47,60 +50,259 @@ describe("Signing Up", () => {
 	 */
 	test("Can't sign up with an invalid email", async () => {
 		await page.goto(APP);
-		expect(await Tests.onSignUp(page, "testing_bad_email", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBeFalsy();
-	}, 16000);
+		expect(await Tests.onSignUp(
+			page,
+			"bad_email",
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
 
 	/**
 	 *  Test #2: Can't sign up with a blank email
 	 */
 	test("Can't sign up with a blank email", async () => {
-		expect(await Tests.onSignUp(page, "", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBeFalsy();
-	}, 16000);
+		expect(await Tests.onSignUp(
+			page,
+			"",
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language	
+		)).toBeFalsy();
+	}, 600000);
 
 	/**
 	 * Test #3: Can't signup with mismatching password
 	 */
 	test("Can't signup with mismatching passwords", async () => {
-		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty2", "May", "2", "English")).toBeFalsy();
-	}, 16000);
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password + "abc",
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language	
+		)).toBeFalsy();
+	}, 600000);
 
 	/**
 	 * Test #4: Can't signup with blank firstname
 	 */
 	test("Can't signup with blank firstname", async () => {
-		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), "", faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBeFalsy();
-	}, 16000);
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			"",
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
 
 	/**
 	 * Test #5: Can't signup with blank lastname
 	 */
 	test("", async () => {
-		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), faker.name.firstName(), "", "qwerty", "qwerty", "May", "2", "Français")).toBeFalsy();
-	})
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			user.firstName,
+			"",
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language = "Français"
+		)).toBeFalsy();
+	}, 600000);
 	/**
 	 * Test #6: Can't sign up with a blank company name
 	 */
 	test("Can't sign up with a blank company name", async () => {
-		expect(await Tests.onSignUp(page, faker.internet.email(), true, "", faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "Français")).toBeFalsy();
-	})
-	// /**
-	//  * Test #7
-	//  */
-	// test("", async () => {
-	// 	expect(await Tests.onSignUp(page, )).toBeFalsy();
-	// })
-	// /**
-	//  * Test #8: 
-	//  */
-	// test("", async () => {
-	// 	expect(await Tests.onSignUp(page, )).toBeFalsy();
-	// })
-	// /**
-	//  * Test #9: 
-	//  */
-	// test("", async () => {
-	// 	expect(await Tests.onSignUp(page, )).toBeFalsy();
-	// })
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			"",
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
+
+	/**
+	 * Test #7: Can't signup with blank password
+	 */
+	test("Can't signup with blank password", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			"",
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
+	/**
+	 * Test #8: Can't sign up with blank confirm password
+	 */
+	test("Can't sign up with blank confirm password", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			"",
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
+	/**
+	 * Test #9: Can't sign up with a password less than 6 characters
+	 */
+	test("Can't sign up with a password less than 6 characters", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			"12abc",
+			"12abc",
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
+	/**
+	 * Test #10: Able to sign up with a blank language
+	 */
+	test("Able to sign up with a blank language", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			user.email,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			""
+		)).toBeTruthy();
+	}, 600000);
+	/**
+	 * Test #11: Able to sign up with a blank birth month
+	 */
+	test("Able to sign up with a blank birth month", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			faker.internet.email(),
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			"",
+			user.birthdayDay,
+			user.language
+		)).toBeTruthy();
+	}, 600000);
+	/**
+	 * Test #12: Able to sign up with a blank birth day
+	 */
+	test("Able to sign up with a blank birth day", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			faker.internet.email(),
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			"",
+			user.language
+		)).toBeTruthy();
+	}, 600000);
+	/**
+	 * Test #13: Able to sign up successfully with all the fields entered correctly
+	 */
+	test("Able to sign up successfully with all the fields entered correctly", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			`dummy${rand}@email.fan.tas.tic.com`,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeTruthy();
+	}, 600000);
+	/**
+	 * Test #14: Can't sign up with duplicate email
+	 */
+	test("Can't sign up with duplicate email", async () => {
+		expect(await Tests.onSignUp(
+			page,
+			`dummy${rand}@email.fan.tas.tic.com`,
+			true,
+			user.companyName,
+			user.firstName,
+			user.lastName,
+			user.password,
+			user.password,
+			user.birthdayMonth,
+			user.birthdayDay,
+			user.language
+		)).toBeFalsy();
+	}, 600000);
 });
 
 const Tests = {
