@@ -34,22 +34,21 @@ afterAll(() => {
 	browser.close();
 });
 
-// describe("Pretest", () => {
-// 	/*******************************************************
-// 	 *  Pre-Test:
-// 	 *******************************************************/
-// 	test("Getting to the sign up page", async () => {
-// 		page.goto("https://shipping.dicom.com");
-// 		expect(!!page.click(".link-sign-up")).toBe(true);
-// 	}, 16000);
-// });
-
 describe("Signing Up", () => {
+	/*******************************************************
+	 *  Pre-Test:
+	 *******************************************************/
+	test("Getting to the sign up page", async () => {
+		await page.goto("https://shipping.dicom.com");
+		await page.click(".link-sign-up");
+		// expect(page.url()).toEqual("https://shipping.dicom.com/register#register");
+	}, 16000);
+
 	/**
 	 * Test #1: Can't sign up with an invalid email
 	 */
 	test("Can't sign up with an invalid email", async () => {
-		await page.goto(APP);
+		// await page.goto(APP);
 		expect(await Tests.onSignUp(
 			page,
 			"bad_email",
