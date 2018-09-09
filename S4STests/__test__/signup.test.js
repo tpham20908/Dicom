@@ -5,7 +5,17 @@ const puppeteer = require("puppeteer");
 
 const APP = "https://shipping.dicom.com/register#register";
 // const DEV_API_URL = "https://dicom-dev.cleverbuild.biz/api/v1";
-
+/*
+const user = {
+	firstName: faker.name.firstName(),
+	lastName: faker.name.lastName(),
+	email: faker.internet.email(),
+	password: faker.internet.password(),
+	companyName: faker.company.companyName(),
+	birthdayMonth: faker.date.month(),
+	birthdayDay: faker.date.between(1, 28)
+};
+*/
 let browser;
 let page;
 
@@ -21,35 +31,76 @@ afterAll(() => {
 	browser.close();
 });
 
+// describe("Pretest", () => {
+// 	/*******************************************************
+// 	 *  Pre-Test:
+// 	 *******************************************************/
+// 	test("Getting to the sign up page", async () => {
+// 		page.goto("https://shipping.dicom.com");
+// 		expect(!!page.click(".link-sign-up")).toBe(true);
+// 	}, 16000);
+// });
+
 describe("Signing Up", () => {
 	/**
 	 * Test #1: Can't sign up with an invalid email
 	 */
 	test("Can't sign up with an invalid email", async () => {
 		await page.goto(APP);
-		expect(await Tests.onSignUp(page, "testing_bad_email", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBe(false);
+		expect(await Tests.onSignUp(page, "testing_bad_email", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBeFalsy();
 	}, 16000);
 
-	/*******************************************************
+	/**
 	 *  Test #2: Can't sign up with a blank email
-	 *******************************************************/
+	 */
 	test("Can't sign up with a blank email", async () => {
-		expect(await Tests.onSignUp(page, "", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBe(false);
+		expect(await Tests.onSignUp(page, "", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBeFalsy();
 	}, 16000);
 
 	/**
 	 * Test #3: Can't signup with mismatching password
 	 */
 	test("Can't signup with mismatching passwords", async () => {
-		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty2", "May", "2", "English"))
+		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty2", "May", "2", "English")).toBeFalsy();
 	}, 16000);
 
 	/**
 	 * Test #4: Can't signup with blank firstname
 	 */
 	test("Can't signup with blank firstname", async () => {
-		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), "", faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English"))
+		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), "", faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBeFalsy();
 	}, 16000);
+
+	/**
+	 * Test #5: Can't signup with blank lastname
+	 */
+	test("", async () => {
+		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), faker.name.firstName(), "", "qwerty", "qwerty", "May", "2", "Français")).toBeFalsy();
+	})
+	/**
+	 * Test #6: Can't sign up with a blank company name
+	 */
+	test("Can't sign up with a blank company name", async () => {
+		expect(await Tests.onSignUp(page, faker.internet.email(), true, "", faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "Français")).toBeFalsy();
+	})
+	// /**
+	//  * Test #7
+	//  */
+	// test("", async () => {
+	// 	expect(await Tests.onSignUp(page, )).toBeFalsy();
+	// })
+	// /**
+	//  * Test #8: 
+	//  */
+	// test("", async () => {
+	// 	expect(await Tests.onSignUp(page, )).toBeFalsy();
+	// })
+	// /**
+	//  * Test #9: 
+	//  */
+	// test("", async () => {
+	// 	expect(await Tests.onSignUp(page, )).toBeFalsy();
+	// })
 });
 
 const Tests = {
