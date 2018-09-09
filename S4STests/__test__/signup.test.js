@@ -12,10 +12,9 @@ let page;
 beforeAll(async () => {
 	browser = await puppeteer.launch({
 		headless: false,
-		slowMo: 80
+		slowMo: 10
 	});
 	page = await browser.newPage();
-	
 });
 
 afterAll(() => {
@@ -23,10 +22,34 @@ afterAll(() => {
 });
 
 describe("Signing Up", () => {
-	test("Can't sign up with an invalid email (email of: 'testing_bad_email')", async () => {
+	/**
+	 * Test #1: Can't sign up with an invalid email
+	 */
+	test("Can't sign up with an invalid email", async () => {
 		await page.goto(APP);
 		expect(await Tests.onSignUp(page, "testing_bad_email", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBe(false);
-	}, 160000);
+	}, 16000);
+
+	/*******************************************************
+	 *  Test #2: Can't sign up with a blank email
+	 *******************************************************/
+	test("Can't sign up with a blank email", async () => {
+		expect(await Tests.onSignUp(page, "", true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English")).toBe(false);
+	}, 16000);
+
+	/**
+	 * Test #3: Can't signup with mismatching password
+	 */
+	test("Can't signup with mismatching passwords", async () => {
+		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), faker.name.firstName(), faker.name.lastName(), "qwerty", "qwerty2", "May", "2", "English"))
+	}, 16000);
+
+	/**
+	 * Test #4: Can't signup with blank firstname
+	 */
+	test("Can't signup with blank firstname", async () => {
+		expect(await Tests.onSignUp(page, faker.internet.email(), true, faker.company.companyName(), "", faker.name.lastName(), "qwerty", "qwerty", "May", "2", "English"))
+	}, 16000);
 });
 
 const Tests = {
