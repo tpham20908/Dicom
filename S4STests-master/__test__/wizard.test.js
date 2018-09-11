@@ -69,6 +69,9 @@ let contacts = [];
 /*******************************************************
  *  Pre-Test:
  *******************************************************/
+
+ debugger;
+
 describe("Pre-tests", () => {
     test("Page and browser are not null",() => {
         page = _.GetPage();

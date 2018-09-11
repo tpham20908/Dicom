@@ -1,3 +1,6 @@
+let page;
+let browser;
+
 export const Quick = {
     GoToQuick: async() => {
         await page.hover(".menu-item.active.hover-over.shipping");

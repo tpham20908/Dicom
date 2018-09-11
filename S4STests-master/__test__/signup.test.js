@@ -15,6 +15,7 @@ describe("Signing Up", () => {
     /*******************************************************
      *  Pre-Test:
      *******************************************************/
+    debugger;
     test("Getting to the sign up page", async () => {
         expect(await SignUp.Tests.GoToSignUp()).toBe(true);
     }, 16000);

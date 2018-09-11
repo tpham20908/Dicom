@@ -1,5 +1,3 @@
-import { _ } from '../src/app/modules/Start/controller';
-import * as SignUp from '../src/app/modules/Signup/controller';
 const faker = require("faker");
 const puppeteer = require("puppeteer");
 
@@ -38,7 +36,7 @@ describe("Signing Up", () => {
 	/*******************************************************
 	 *  Pre-Test:
 	 *******************************************************/
-	test("Getting to the sign up page", async () => {
+	test.only("Getting to the sign up page", async () => {
 		await page.goto("https://shipping.dicom.com");
 		await page.click(".link-sign-up");
 		// expect(page.url()).toEqual("https://shipping.dicom.com/register#register");

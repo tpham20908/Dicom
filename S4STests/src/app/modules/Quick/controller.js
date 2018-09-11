@@ -4,11 +4,13 @@ import { Quick } from './helper';
 /**
  * Tests for Jest
  */
-let page, browser;
+let page;
+let browser;
+
 export const Tests = {
     Setup: async (_page,_browser) => {
         page = _page;
-        broswer = _browser;
+        browser = _browser;
         return (page != null && browser != null && Quick.Setup(_page,_browser));
     },
         

@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 
-const APP = "https://shipping.dicom.com";
+// const APP = "https://shipping.dicom.com";
+const APP = "https://dicom-dev.cleverbuild.biz";
 const DEV_API_URL = "https://dicom-dev.cleverbuild.biz/api/v1";
 
 let page;
@@ -11,6 +12,7 @@ export const _ = {
         // open the browser
         browser = await puppeteer.launch({
             headless: false,
+            // slowMo: 40,
             args: ['--start-maximized']
         });
             
@@ -22,7 +24,7 @@ export const _ = {
             height: 0,
             deviceScaleFactor: 1
         });
-        await page.keyboard.press("F11");
+        // await page.keyboard.press("F11");
         await page.keyboard.press("F11");
         let pages = await browser.pages();
         await pages[0].close();

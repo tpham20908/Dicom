@@ -32,7 +32,8 @@ export async function GenerateDomesticTest(info) {
 		await doConfirmPay(info);
 		await doConfirmPayProceed(info.path);
 
-	}catch(err){ done.fail(err); }
+	}// catch(err){ console.log(err); }	
+	catch(err){ done.fail(err); }
 }
 export const GenerateXBorderTest = async (info) => {
 	currentInfo = info;
@@ -50,7 +51,8 @@ export const GenerateXBorderTest = async (info) => {
 
 		await doConfirmPay(info);
 
-	}catch(err){ done.fail(err); }
+	}//catch(err){ console.log(err); }	
+	catch(err){ done.fail(err); }
 }
 export const GenerateManifestTest = (showPricing, address, path) => {
 	GenerateManifest(showPricing, address, path);
@@ -152,7 +154,7 @@ export async function doConfirmPayProceed(path){
 	}
 	let popup = pages.pop();
 	expect(popup.url()).toMatch(/blob:*/);
-	expect(await Wizard.CheckifShipmentwasCreated()).toBe(true);
+	expect(await Wizard.CheckifShipmentwasCreated(currentWeight, currentPieces, currentInfo)).toBe(true);
 
 	try{
 		if (!fs.existsSync(path))
@@ -164,7 +166,8 @@ export async function doConfirmPayProceed(path){
 		//ERROR HERE TODO
 		//const html = await popup.evaluate('new XMLSerializer().serializeToString(document.doctype) + document.documentElement.outerHTML');
 		//await Writer.WritetoFile(path + "html.txt", html);
-	}catch(err){ done.fail(err); }
+	}	//catch(err){ console.log(err); }	
+		catch(err){ done.fail(err); }
 
 	try{
 		if (!fs.existsSync(path))
@@ -172,7 +175,8 @@ export async function doConfirmPayProceed(path){
 		await popup.waitFor(2500);
 		await popup.screenshot({path: path + "label.png", type: "png", fullPage: true});
 		await popup.close();
-	}catch(err){ done.fail(err); }
+	}// catch(err){ console.log(err); }	
+	catch(err){ done.fail(err); }
 }
 
 /**

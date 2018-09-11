@@ -217,7 +217,7 @@ export const Wizard = {
 		return res == Math.pow(2,count) - 1;
 	
 	},
-	CheckifShipmentwasCreated: async () => {
+	CheckifShipmentwasCreated: async (currentWeight, currentPieces, currentInfo) => {
 		// STUFF IN HERE CAN BE IN ANOTHER FILE!!
 		let res = true, data, count = 0;
 		// <THIS IS GO TO MANIFEST>
@@ -247,7 +247,7 @@ export const Wizard = {
 		}));
 		res |= data == today? 1 << (++count - 1):0;
 	
-		var service = Helper.GetServiceNameFromAccount(currentInfo.account);
+		var service = details.Helper.GetServiceNameFromAccount(currentInfo.account);
 		data = (await page.$eval("div.shipment-list-wrapper > div > span:nth-child(1) > div > div.shipment-item.service > span > span", (element) => {
 			return element.textContent;
 		}));

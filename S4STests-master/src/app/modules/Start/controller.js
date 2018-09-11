@@ -11,7 +11,8 @@ export const _ = {
         // open the browser
         browser = await puppeteer.launch({
             headless: false,
-            args: ['--start-maximized']
+            args: ['--start-maximized'],
+            slowMo: 80
         });
             
         // open the dicom application
