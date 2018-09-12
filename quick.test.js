@@ -2,6 +2,7 @@ import { _ } from './src/app/modules/Start/controller';
 import { SignIn } from './src/app/modules/Signin/helper';
 import * as Quick from './src/app/modules/Quick/controller';
 import * as Contact from './src/app/modules/Contacts/controller';
+import * as Helper from './src/app/modules/Quick/helper';
 import { Manifest } from './src/app/modules/Manifests/helper';
 
 let page;
@@ -47,4 +48,16 @@ describe("Pre-tests", () => {
   test("Signing in", async () => {
     return expect(await SignIn.onSignIn(USERNAME, PASSWORD)).toBeTruthy();
   }, 50000);
+
+  test("Package Randomiser bringing the right data back", async () => {
+    let pkg = Helper.PackageDetails.PackageRandomizer();
+    expect(pkg).toHaveProperty('type');
+    expect(pkg).toHaveProperty('measurement');
+    expect(pkg).toHaveProperty('quantity');
+    expect(pkg).toHaveProperty('weight');
+    expect(pkg).toHaveProperty('length');
+    expect(pkg).toHaveProperty('width');
+    expect(pkg).toHaveProperty('height');
+    expect(pkg).toHaveProperty('instructions');
+  }, 10000);
 });

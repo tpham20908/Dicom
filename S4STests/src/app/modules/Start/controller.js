@@ -1,8 +1,11 @@
 import puppeteer from 'puppeteer';
 
 // const APP = "https://shipping.dicom.com";
-const APP = "https://dicom-dev.cleverbuild.biz";
-const DEV_API_URL = "https://dicom-dev.cleverbuild.biz/api/v1";
+const APP = "http://localhost:3000";
+const DEV_API_URL = "http://192.168.88.129:5000/api/v1";
+// const APP = "https://dicom-dev.cleverbuild.biz";
+// const DEV_API_URL = "https://dicom-dev.cleverbuild.biz/api/v1";
+
 
 let page;
 let browser;

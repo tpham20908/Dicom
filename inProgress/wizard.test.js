@@ -54,7 +54,7 @@ let contacts = [];
  *  Pre-Test:
  *******************************************************/
 describe("Pre-tests", () => {
-  test("Page and browser are not null", () => {
+  test.only("Page and browser are not null", () => {
     page = _.GetPage();
     browser = _.GetBrowser();
     return expect(page && browser).toBeDefined();
