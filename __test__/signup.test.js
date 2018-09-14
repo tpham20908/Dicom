@@ -23,7 +23,7 @@ let page;
 beforeAll(async () => {
 	browser = await puppeteer.launch({
 		headless: false,
-		// slowMo: 40
+		// slowMo: 80
 	});
 	page = await browser.newPage();
 });
@@ -36,7 +36,7 @@ describe("Signing Up", () => {
 	/*******************************************************
 	 *  Pre-Test:
 	 *******************************************************/
-	test.only("Getting to the sign up page", async () => {
+	test.skip("Getting to the sign up page", async () => {
 		await page.goto("https://shipping.dicom.com");
 		await page.click(".link-sign-up");
 		// expect(page.url()).toEqual("https://shipping.dicom.com/register#register");
@@ -46,7 +46,7 @@ describe("Signing Up", () => {
 	 * Test #1: Can't sign up with an invalid email
 	 */
 	test("Can't sign up with an invalid email", async () => {
-		// await page.goto(APP);
+		await page.goto(APP);
 		expect(await Tests.onSignUp(
 			page,
 			"bad_email",

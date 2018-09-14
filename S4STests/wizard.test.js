@@ -42,6 +42,8 @@ const USERNAME = "test@test.com";
 const PASSWORD = "test123";
 // const USERNAME = "tung@dicomexpress.com";
 // const PASSWORD = "Dicom-1234";
+// const USERNAME = "test2@email.com";
+// const PASSWORD = "123456";
 
 const DOMESTIC_PATH = "data/wizard/domestic/";
 const XBORDER_PATH = "data/wizard/xborder/";

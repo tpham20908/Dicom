@@ -91,7 +91,7 @@ export const Wizard = {
 
 			// Change the pickup date
 			let currentDate = new Date();
-			currentDate.setDate(currentDate.getDate() + 1);
+			currentDate.setDate(currentDate.getDate() + 3);
 			await _.changeSelect.withName(Selectors.byName.date, currentDate.toISOString().split('T')[0]);
 
 			// Click on add package
