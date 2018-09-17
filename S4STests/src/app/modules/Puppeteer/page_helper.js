@@ -179,6 +179,7 @@ export const Wizard = {
 export const Quick = {
     GetFromContact: async (from) => {
         await page.waitFor(100);
+        await page.waitForSelector(Selectors.Quick.inputs.from_contact);
         await page.click(Selectors.Quick.inputs.from_contact);
         await page.type(Selectors.Quick.inputs.from_contact, from);
         // await page.waitForSelector(Selectors.Quick.divs.contact, {timeout: 10000, visible: true});
@@ -187,6 +188,7 @@ export const Quick = {
     },
     GetToContact: async (to) => {
         await page.waitFor(100);
+        await page.waitForSelector(Selectors.Quick.inputs.to_contact);
         await page.click(Selectors.Quick.inputs.to_contact);
         await page.type(Selectors.Quick.inputs.to_contact, to);
         // await page.waitForSelector(Selectors.Quick.divs.contact, {timeout: 10000, visible: true});

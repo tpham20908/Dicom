@@ -9,9 +9,9 @@ export const Selectors = {
     shipping_sidebar: "div.side-bar > div.menu-item.hover-over.shipping",
   },
   inputs: {
-    from_contact: "#shipper_contact .form-group.std input[name=contact]",
-    to_contact: "#shipper_contact .form-group.std input[name=contact]",
-    billing_account: ".input.right .form-group.std select[name=billing_account]",
+    from_contact: "#shipper_contact.form-group input.form-control",
+    to_contact: "#shipper_contact.form-group input.form-control",
+    billing_account: ".input.right.form-group.std select[name=billing_account]",
     payment: ".input.left .form-group.std select[name=payment_type]",
 
     //REFERNCES:
