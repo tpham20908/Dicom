@@ -15,7 +15,7 @@ export const _ = {
         // open the browser
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 20,
+            slowMo: 60,
             args: ['--start-maximized']
         });
             
@@ -28,7 +28,7 @@ export const _ = {
             deviceScaleFactor: 1
         });
         // await page.keyboard.press("F11");
-        await page.keyboard.press("F11");
+        // await page.keyboard.press("F11");
         let pages = await browser.pages();
         await pages[0].close();
 

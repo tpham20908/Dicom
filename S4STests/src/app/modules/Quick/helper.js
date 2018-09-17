@@ -1,5 +1,7 @@
 import faker from 'faker';
 import * as details from '../Shipments/shipment_details';
+import { Selectors } from './selectors';
+import * as _ from '../Puppeteer/page_helper';
 
 let page;
 let browser;
@@ -23,15 +25,65 @@ export const PackageDetails = {
 };
 
 export const Quick = {
-  GoToQuick: async () => {
-    await page.hover(".menu-item.active.hover-over.shipping");
-    await page.waitForSelector(".sub-routes div:nth-child(3)");
-    await page.click(".sub-routes div:nth-child(3)");
+  GoToQuick: async() => {
+		await page.hover(Selectors.divs.shipping_sidebar);
+		await page.waitForSelector(Selectors.divs.quick_selector, {timeout: 10000, visible: true});
+		await page.click(Selectors.divs.quick_selector);
+		await page.waitForSelector(Selectors.divs.quick_container, {timeout: 10000, visible: true});
   },
+  
+  AddressDetails: async(from, to) => {
+		await _.Quick.GetFromContact(from);
+    await _.Quick.GetToContact(to);
+    /*
+		await _.changeSelect.withName(Selectors.byName.payment_type, type);
+		await _.changeSelect.withName(Selectors.byName.billing_account, account);
+
+    currentAccount = account;
+    */
+	},
 
   Setup: (_page, _browser) => {
     page = _page;
     browser = _browser;
     return (page != null && browser != null);
-  }
+  },
+
+  RestartShipment: async () => {
+		await Quick.GoToQuick();
+		await page.click(Selectors.buttons.restart_shipment);
+		await page.waitForSelector(Selectors.divs.quick_container, {timeout: 10000, visible: true});
+  },
+  
+  AddressDetailsValidation: async (from, to, paymentType, account) => {
+		let res = true, data, count = 0;
+	
+		// From
+		data = await page.$eval(".address-bubble.active div.title", (element)=>{
+			return element.innerText;
+		});
+		res |= data == from? 1 << (++count - 1): 0;
+		
+		// TO
+		data = await page.$eval(".address-bubble.orange-active div.title", (element)=>{
+			return element.innerText;
+		});
+		res |= data == to? 1 << (++count - 1): 0;
+	
+		// Payment Type
+		data = await page.$eval("select[name=payment_type]", (element) => {
+			var selected = element.options[element.selectedIndex];
+			return selected.getAttribute("value");
+		});
+		res |= data == paymentType? 1 << (++count - 1): 0;
+	
+		// Account
+		data = await page.$eval("select[name=billing_account]", (element) => {
+			var selected = element.options[element.selectedIndex];
+			return selected.getAttribute("value");
+		});
+		res |= data == account? 1 << (++count - 1): 0;
+		return (res == Math.pow(2,count) - 1);
+	
+	},
 }

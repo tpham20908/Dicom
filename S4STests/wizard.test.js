@@ -56,7 +56,7 @@ let contacts = [];
  *  Pre-Test:
  *******************************************************/
 describe("Pre-tests", () => {
-  test("Page and browser are not null", () => {
+  test.only("Page and browser are not null", () => {
     page = _.GetPage();
     browser = _.GetBrowser();
     return expect(page && browser).toBeDefined();
@@ -153,7 +153,7 @@ describe("Testing Domestic Parcel Shipments", () => {
     describe("test #" + i + ".", () => {
       let shipment = {
         from: "Dicom Shipping Test",
-        to: " dsopinfn",
+        to: "CAM-TRAC",    //"dsopinfn",
         payment: PAYMENT_TYPES.prepaid,
         account: ACCOUNTS.ca_parcel,
         service: SERVICE_TYPES.ground,

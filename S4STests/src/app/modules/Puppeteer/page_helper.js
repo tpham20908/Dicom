@@ -1,9 +1,11 @@
 import * as Contact_Selectors from '../Contacts/selectors';
 import * as Wizard_Selectors from '../Wizard/selectors';
+import * as Quick_Selectors from '../Quick/selectors';
 
 const Selectors = {
     Wizard: Wizard_Selectors.Selectors,
-    Contact: Contact_Selectors.Selectors,
+    Quick: Quick_Selectors.Selectors,
+    Contact: Contact_Selectors.Selectors
 }
 
 const additionalServices = ["HFP","NCV","TRD","WKD","DCV","PHS"];
@@ -95,6 +97,101 @@ export const Wizard = {
         await page.waitForSelector(Selectors.Wizard.divs.contact, {timeout: 10000, visible: true});
         await page.click(Selectors.Wizard.divs.contact);
         await page.waitForSelector(Selectors.Wizard.divs.to_selected, {timeout: 10000, visible: true});
+    },
+    ChangeMeasurement: async (measurement) => {
+        let ready = false;
+        while(!ready){
+            if(measurement == "metric"){
+                await page.click(Selectors.Wizard.spans.metric);
+                ready = await page.$eval(Selectors.Wizard.spans.metric, (element) => {
+                    return element.className;
+                }) == "selected";
+            }else{
+                await page.click(Selectors.Wizard.spans.imperial);
+                ready = await page.$eval(Selectors.Wizard.spans.imperial, (element) => {
+                    return element.className;
+                }) == "selected";
+            }
+        }
+    },
+    GenerateAdditionalServices: async (account) => {
+        // Generate a random number of services to select
+        let numServices = Math.floor(Math.random() * 3);
+        // Create an array to send back all services that were added
+        let selected = [];
+    
+        // Check if a private home delivery
+        let homeDelivery;
+        try{
+            homeDelivery = await page.$eval("input[name=PHD]", (element) => {
+                return element.checked;
+            });
+        }catch(error){}
+    
+        // add numServices amount of additional services
+        for(let i = 0; i < numServices; i++){
+            // Get a random service
+            let serv = account != "8292093"?  
+                additionalServices[Math.floor(Math.random() * additionalServices.length)] : 
+                freightServices[Math.floor(Math.random() * freightServices.length)];
+    
+            // If it's already selected, continue trying to select another
+            if(selected.indexOf(serv) != -1){
+                i--;
+                continue;
+            }
+    
+            // If WKD or DVC are already select and the current random service is either or,
+            // get another due to not being able to do add WKD if DVC, or other way around
+            if(serv == "DCV" || serv == "WKD"){
+                if(selected.indexOf("WKD") != -1 || selected.indexOf("DCV") != -1){
+                    i--;
+                    continue;
+                }
+            }
+    
+            // If it's a home delivery trade show is not available
+            // If it's not a home delivery PHS is not available
+            if((serv == "TRD" && homeDelivery) || serv == "PHS" && !homeDelivery)
+                continue;
+    
+            // Add the addtional service if passed everything else
+            let ready = false;
+            while(!ready){
+                ready = await page.$eval("input[name="+ serv +"]", (element) => {
+                    element.click();
+                    return element.checked;
+                });
+            }
+    
+            if(serv == "DCV"){
+                await page.waitForSelector(".dicom-surcharge-input", {timeout: 10000, visible: true});
+                await page.type(".dicom-surcharge-input", "10");
+            }
+    
+            // push to the array
+            selected.push(serv);
+        }
+        return selected;
+    }
+}
+
+export const Quick = {
+    GetFromContact: async (from) => {
+        await page.waitFor(100);
+        await page.click(Selectors.Quick.inputs.from_contact);
+        await page.type(Selectors.Quick.inputs.from_contact, from);
+        // await page.waitForSelector(Selectors.Quick.divs.contact, {timeout: 10000, visible: true});
+        // await page.click(Selectors.Quick.divs.contact);
+        // await page.waitForSelector(Selectors.Quick.divs.from_selected, {timeout: 10000, visible: true});
+    },
+    GetToContact: async (to) => {
+        await page.waitFor(100);
+        await page.click(Selectors.Quick.inputs.to_contact);
+        await page.type(Selectors.Quick.inputs.to_contact, to);
+        // await page.waitForSelector(Selectors.Quick.divs.contact, {timeout: 10000, visible: true});
+        // await page.click(Selectors.Quick.divs.contact);
+        // await page.waitForSelector(Selectors.Quick.divs.to_selected, {timeout: 10000, visible: true});
     },
     ChangeMeasurement: async (measurement) => {
         let ready = false;
