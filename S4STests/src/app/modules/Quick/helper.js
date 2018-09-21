@@ -87,3 +87,29 @@ export const Quick = {
 	
 	},
 }
+
+export const changeSelect = {
+	withName: async (name, value, match = null) => {
+			// Can't do: changeSelect.withSelector("select[name="+name+"]", value ,match);
+			match = match == null? value : match;
+			let ready = false;
+			while(!ready){
+					await page.select("select[name="+name+"]", value);
+					ready = (await page.$eval("select[name="+name+"]", (element) => {
+							var selected = element.options[element.selectedIndex];
+							return selected.getAttribute("value");
+					})) == value;
+			}
+	},
+	withSelector: async (selector, value, match = null) => {
+			match = match == null? value : match;
+			let ready = false;
+			while(!ready){
+					await page.select(selector, value);
+					ready = (await page.$eval(selector, (element) => {
+							var selected = element.options[element.selectedIndex];
+							return selected.getAttribute("value");
+					})) == match;
+			}
+	},
+}

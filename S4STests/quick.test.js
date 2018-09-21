@@ -9,18 +9,18 @@ import { PAYMENT_TYPES, ACCOUNTS, SERVICE_TYPES, PICKUP_POINTS, PICKUP_TIMES } f
 let page;
 let browser;
 
-const USERNAME = "test@test.com";
-const PASSWORD = "test123";
-// const USERNAME = "tung@dicomexpress.com";
-// const PASSWORD = "Dicom-1234";
+// const USERNAME = "test@test.com";
+// const PASSWORD = "test123";
+const USERNAME = "test2@email.com";
+const PASSWORD = "123456";
 
 beforeAll(async () => {
-    await _.Run();
-    await _.ChangeToDev();
+  await _.Run();
+  await _.ChangeToDev();
 }, 20000);
 
 afterAll(() => {
-    _.GetBrowser().close();
+  _.GetBrowser().close();
 });
 
 
@@ -66,7 +66,7 @@ describe("Pre-tests", () => {
 
 
 describe("Testing Domestic Parcel Shipments", () => {
-  for (var i = 0; i < 1; i++) {
+  for (var i = 0; i < 5; i++) {
     describe("test #" + i + ".", () => {
       let shipment = {
         from: "Dicom Shipping Test",
@@ -77,32 +77,32 @@ describe("Testing Domestic Parcel Shipments", () => {
         ready: PICKUP_TIMES.eight,
         closing: PICKUP_TIMES.four_thirty,
         point: PICKUP_POINTS.mailbox,
-        // path: (DOMESTIC_PATH + "test/")
       };
-
-      // with the shipment can we predict the error if any, so that when running the test
-      // below upon return of or within the test itself we can make sure it passes if it is
-      // supposed to run in to an error, e.g. ready time is later than closing time.
-      // Possible errors: ready time is later than closing time
 
       test("test", async () => {
         let noError = true;
         try {
           noError = await Quick.doChangetoQuick();
 
-          noError = await Quick.doAddressDetails(shipment);
+          noError = await Quick.doAddressDetails(shipment.from, shipment.to);
 
-          noError = await Quick.doPaymentDetails(shipment);
-          // noError = await Quick.doPackageType();
+          noError = await Quick.doPaymentDetails(shipment.account, shipment.payment);
 
-          // noError = await Quick.doPackageDetails(shipment);
-          // noError = await Quick.doPackageDetailsProceed(false);
+          noError = await Quick.fillUpReferences("5", "3", "4", "2");
 
-          // noError = await Quick.doConfirmPay(shipment);
-          // noError = await Quick.doConfirmPayProceed(shipment.path);
+          // additionalServices(hold_for_pickup, non_conveyable, private_home_delivery, signature_required, trade_show_delivery, weekend_delivery, insurance, insurance_value)
+          // noError = await Quick.additionalServices(true, true, true, true, false, false, true, "500");
+
+          noError = await Quick.fillUpBoxForm("BX", "3", "12", "2", "3", "5", "handle with care", "15:30", "22:00", "MB", "Finance", "GRD", "6", "7", "8", "9");
+
+          noError = await Quick.fillUpEnvelopeForm("EV", "5", "keep dry", "16:00", "22:00", "SH", "Logistic", "GRD");
+
+          await page.waitFor(2000);
+          await page.click(".quick-shipment-ship-button");
+
           expect(noError).toBe(true);
         } catch (err) { console.log(err); fail(err); }
-      }, 40000);
+      }, 120000);
     });
   }
 });
