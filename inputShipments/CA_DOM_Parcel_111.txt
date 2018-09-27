@@ -1,0 +1,36 @@
+{
+  "shipment": {
+    "from": "Dicom Shipping Test",
+    "to": "CAM-TRAC",
+    "payment": "PREPAID",
+    "account": "300030",
+    "packageType": "BX",
+    "quantity": "2",
+    "weight": "15",
+    "length": "5",
+    "width": "4",
+    "height": "6",
+    "instruction": "Fragile",
+    "service": "GRD",
+    "ready": "14:00",
+    "closing": "18:00",
+    "department": "IT",
+    "point": "MB"
+  },
+  "references": {
+    "employeeNumber": "2",
+    "invoiceNumber": "5",
+    "purchaseNumber": "4",
+    "presoldOrderNumber": "1"
+  },
+  "additionalServices": {
+    "holdForPickup": true,
+    "nonConveyable": true,
+    "privateHomeDelivery": true,
+    "signatureRequired": false,
+    "tradeShowDelivery": false,
+    "weekendDelivery": false,
+    "insurance": true,
+    "insuranceValue": "500"
+  }
+}

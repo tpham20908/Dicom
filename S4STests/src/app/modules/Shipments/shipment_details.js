@@ -1,5 +1,7 @@
 import faker from "faker";
 
+export const FROM = "Dicom Shipping Test";
+export const TO = "CAM-TRAC"; //"outside"
 export const Helper = {
 	GetServiceNameFromAccount: (account) => {
 		switch(account){
@@ -73,7 +75,19 @@ export const PARCEL_PACKAGES = {
 	envelope: "EV",
 	box: "BX",
 	array: ["EV", "BX"],
-}
+};
+export const BOX = {
+	quantity: Math.ceil(Math.random() * 5) + "",
+	weight: "3.2",
+	length: "5",
+	width: "6",
+	height: "8", 
+	instruction: "Fragile"
+};
+export const ENVELOPE = {
+	quantity: Math.ceil(Math.random() * 7) + "",
+	instruction: "keep dry"
+};
 export const FREIGHT_PACKAGES = {
 	tube: "tube",
 	other: "other",
@@ -99,4 +113,9 @@ export const DUTY_OPTIONS = {
 	recipient: "RECIPIENT",
 	third_party: "THIRD_PARTY",
 	array: ["SHIPPER","RECIPIENT","THIRD_PARTY"],
+};
+export const DEPARTMENT = {
+	IT: "IT",
+	FINANCE: "Finance",
+	LOGISTIC: "Logistic"
 }
